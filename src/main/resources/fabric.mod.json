@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "slashwarp",
+  "version": "${version}",
+  "name": "SlashWarp",
+  "description": "Add a /fly command to singleplayer",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/slashwarp/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "org.HedgeTech.slashwarp.client.SlashWarpClient"
+    ],
+    "main": [
+      "org.HedgeTech.slashwarp.SlashWarp"
+    ]
+  },
+  "mixins": [
+    "slashwarp.mixins.json",
+    {
+      "config": "slashwarp.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
