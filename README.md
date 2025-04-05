@@ -1,6 +1,6 @@
 # SlashWarp
 
-A Fabric plugin that adds a `/warp` command set to single player minecraft.
+A Fabric plugin that adds a `/warp` command set to single player minecraft for quick traversal to previously visited landmarks and points of interest.
 
 ## Usage
 
