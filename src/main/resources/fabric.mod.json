@@ -3,27 +3,19 @@
   "id": "slashwarp",
   "version": "${version}",
   "name": "SlashWarp",
-  "description": "Add a /fly command to singleplayer",
-  "authors": [],
-  "contact": {},
-  "license": "All-Rights-Reserved",
-  "icon": "assets/slashwarp/icon.png",
-  "environment": "client",
-  "entrypoints": {
-    "client": [
-      "org.HedgeTech.slashwarp.client.SlashWarpClient"
-    ],
-    "main": [
-      "org.HedgeTech.slashwarp.SlashWarp"
-    ]
+  "description": "Add a simple /warp command set to single player and servers alike.",
+  "authors": ["Jag3Dagster"],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/slashwarp",
+    "sources": "https://github.com/Hedgehog-Technologies/SlashWarp",
+    "issues": "https://github.com/Hedgehog-Technologies/SlashWarp/issues"
   },
-  "mixins": [
-    "slashwarp.mixins.json",
-    {
-      "config": "slashwarp.client.mixins.json",
-      "environment": "client"
-    }
-  ],
+  "license": "GPLv3",
+  "icon": "assets/slashwarp.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [ "org.HedgeTech.slashwarp.SlashWarp" ]
+  },
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
