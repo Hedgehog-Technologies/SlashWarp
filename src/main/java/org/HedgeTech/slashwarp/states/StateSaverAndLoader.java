@@ -1,93 +1,62 @@
 package org.HedgeTech.slashwarp.states;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.PersistentState;
+import net.minecraft.world.PersistentStateType;
 import net.minecraft.world.World;
 import org.HedgeTech.slashwarp.data.LocationData;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.HedgeTech.slashwarp.SlashWarp.MOD_ID;
 
 public class StateSaverAndLoader extends PersistentState {
-    public HashMap<String, LocationData> warps = new HashMap<>();
+    public static final Codec<Map<String, LocationData>> warpCodec = Codec.unboundedMap(Codec.STRING, LocationData.CODEC);
+    public static final Codec<StateSaverAndLoader> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            warpCodec.fieldOf("warps").forGetter(StateSaverAndLoader::getWarps)
+    ).apply(instance, StateSaverAndLoader::new));
 
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        var warpsNbt = new NbtCompound();
+    private final HashMap<String, LocationData> warps;
 
-        warps.forEach((name, loc) -> {
-            var warpNbt = new NbtCompound();
-
-            var worldIdStr = loc.world.getValue();
-            warpNbt.putString("world", worldIdStr.toString());
-
-            warpNbt.putDouble("x", loc.position.x);
-            warpNbt.putDouble("y", loc.position.y);
-            warpNbt.putDouble("z", loc.position.z);
-
-            warpNbt.putFloat("yaw", loc.yaw);
-            warpNbt.putFloat("pitch", loc.pitch);
-
-            warpsNbt.put(name, warpNbt);
-        });
-
-        nbt.put("warps", warpsNbt);
-
-        return nbt;
+    public StateSaverAndLoader() {
+        warps = new HashMap<>();
     }
 
-    public static StateSaverAndLoader createFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        var state = new StateSaverAndLoader();
-        var warpsNbt = tag.getCompound("warps");
-
-        warpsNbt.getKeys().forEach(key -> {
-            var warpNbt = warpsNbt.getCompound(key);
-
-            var x = warpNbt.getDouble("x");
-            var y = warpNbt.getDouble("y");
-            var z = warpNbt.getDouble("z");
-            var worldIdStr = warpNbt.getString("world");
-            var worldId = Identifier.of(worldIdStr);
-
-            state.warps.put(key, new LocationData() {
-                {
-                    world = RegistryKey.of(RegistryKeys.WORLD, worldId);
-                    position = new Vec3d(x, y, z);
-                    yaw = warpNbt.getFloat("yaw");
-                    pitch = warpNbt.getFloat("pitch");
-                }
-            });
-        });
-
-        return state;
+    public StateSaverAndLoader(Map<String, LocationData> warps) {
+        this.warps = new HashMap<>();
+        System.out.println("Map" + warps);
+        System.out.println("HashMap" + this.warps);
+        this.warps.putAll(warps);
     }
 
-    public static StateSaverAndLoader createNew() {
-        var state = new StateSaverAndLoader();
-        state.warps = new HashMap<>();
-        return state;
+    public Map<String, LocationData> getWarps() {
+        return warps;
     }
 
-    private static final Type<StateSaverAndLoader> type = new Type<>(
-            StateSaverAndLoader::createNew,
-            StateSaverAndLoader::createFromNbt,
-            null
-    );
+    private static final PersistentStateType<StateSaverAndLoader> TYPE = new PersistentStateType<>(MOD_ID, StateSaverAndLoader::new, CODEC, null);
 
-    public static StateSaverAndLoader getServerState(MinecraftServer server) {
-        var serverWorld = server.getWorld(World.OVERWORLD);
-        assert serverWorld != null;
+    public static StateSaverAndLoader ofServer(MinecraftServer server) {
+        try {
+            var state = Objects.requireNonNull(server.getWorld(World.OVERWORLD))
+                    .getPersistentStateManager()
+                    .getOrCreate(TYPE);
 
-        var state = serverWorld.getPersistentStateManager().getOrCreate(type, MOD_ID);
-        state.markDirty();
+            state.markDirty();
+            return state;
+        } catch (Exception e) {
+            var worldStateManager = Objects.requireNonNull(server.getWorld(World.OVERWORLD))
+                    .getPersistentStateManager();
 
-        return state;
+            worldStateManager.set(TYPE, new StateSaverAndLoader());
+
+            var state = worldStateManager.getOrCreate(TYPE);
+            state.markDirty();
+
+            return state;
+        }
     }
 }

@@ -14,14 +14,14 @@ public class WarpLocationSuggestionProvider implements SuggestionProvider<Server
     @Override
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
         var server = context.getSource().getServer();
-        var state = StateSaverAndLoader.getServerState(server);
-        var warpNames = state.warps.keySet();
+        var state = StateSaverAndLoader.ofServer(server);
+        var warpNames = state.getWarps().keySet();
 
         if (warpNames.isEmpty()) {
             return Suggestions.empty();
         }
 
-        state.warps.keySet().forEach(builder::suggest);
+        state.getWarps().keySet().forEach(builder::suggest);
 
         return builder.buildFuture();
     }

@@ -59,8 +59,8 @@ public class Warp {
 
         if (player != null) {
             var server = source.getServer();
-            var state = StateSaverAndLoader.getServerState(server);
-            var warps = state.warps;
+            var state = StateSaverAndLoader.ofServer(server);
+            var warps = state.getWarps();
 
             if (warps.containsKey(name)) {
                 source.sendFeedback(() -> Text.literal("A warp location with that name already exists."), false);
@@ -88,8 +88,8 @@ public class Warp {
 
         if (player != null) {
             var server = source.getServer();
-            var state = StateSaverAndLoader.getServerState(server);
-            var warps = state.warps;
+            var state = StateSaverAndLoader.ofServer(server);
+            var warps = state.getWarps();
 
             if (warps.containsKey(name)) {
                 warps.remove(name);
@@ -107,10 +107,10 @@ public class Warp {
 
         if (player != null) {
             var server = source.getServer();
-            var state = StateSaverAndLoader.getServerState(server);
+            var state = StateSaverAndLoader.ofServer(server);
             var feedback = new StringBuilder();
 
-            state.warps.forEach((name, loc) -> {
+            state.getWarps().forEach((name, loc) -> {
                 var str = "\n" + name + ": " + loc.toString();
                 feedback.append(str);
             });
@@ -126,8 +126,8 @@ public class Warp {
 
         if (player != null) {
             var server = source.getServer();
-            var state = StateSaverAndLoader.getServerState(server);
-            var warps = state.warps;
+            var state = StateSaverAndLoader.ofServer(server);
+            var warps = state.getWarps();
             var previousLocation = getPlayerPreviousLocation(player.getUuid());
 
             if (warps.containsKey(name) || (name.equals("back") && previousLocation != null)) {
