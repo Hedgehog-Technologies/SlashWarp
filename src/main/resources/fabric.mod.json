@@ -3,7 +3,7 @@
   "id": "slashwarp",
   "version": "${version}",
   "name": "SlashWarp",
-  "description": "Add a simple /warp command set to single player and servers alike.",
+  "description": "Add a simple /warp command set to singleplayer and multiplayer alike.",
   "authors": ["Jag3Dagster"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/slashwarp",
