@@ -1,6 +1,6 @@
 # SlashWarp
 
-A Fabric mod that adds a simple `/warp` command set to single player and multiplayer alike for quick traversal to previously visited landmarks and points of interest.
+A Minecraft mod that adds a simple `/warp` command set to single player and multiplayer alike for quick traversal to previously visited landmarks and points of interest.
 
 ## Key Features
 - Warp locations are persistent across sessions
