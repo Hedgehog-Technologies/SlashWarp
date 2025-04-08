@@ -20,4 +20,10 @@ A Fabric mod that adds a simple `/warp` command set to single player and multipl
 
 ## Dependencies
 - Minecraft: `1.21.5`
-- Fabric: `0.16.12`
+
+### Mod Loader
+- Fabric: `0.16.12`  
+OR
+- Forge: `55.0.4`  
+OR
+- NeoForge: `21.5.29-beta`
