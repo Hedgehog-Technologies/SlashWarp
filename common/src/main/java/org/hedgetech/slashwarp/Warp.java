@@ -3,6 +3,8 @@ package org.hedgetech.slashwarp;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Relative;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import org.hedgetech.slashwarp.data.LocationData;
 import org.hedgetech.slashwarp.saveddata.WarpSavedData;
 
@@ -146,6 +148,7 @@ public class Warp {
                     return 1;
                 }
 
+                var pets = world.getEntities(EntityTypeTest.forClass(TamableAnimal.class), animal -> animal.isTame() && animal.isOwnedBy(player) && !animal.isOrderedToSit());
                 var success = false;
 
                 // Let's assume that the player wants to bring their vehicle / mount with them as they warp
@@ -158,6 +161,12 @@ public class Warp {
                         success = success && vehicle.hasPassenger(player);
                     } else {
                         success = player.teleportTo(world, position.x, position.y, position.z, relatives, loc.getYaw(), loc.getPitch(), false);
+                    }
+
+                    // Bring pets along that aren't currently told to sit and stay
+                    // May fail if a safe place wasn't found to teleport to
+                    if (!pets.isEmpty()) {
+                        pets.forEach(TamableAnimal::tryToTeleportToOwner);
                     }
 
                     var result = success ? "Successfully warped" : "Failed to warp";
