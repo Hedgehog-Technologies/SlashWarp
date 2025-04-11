@@ -15,7 +15,7 @@ import java.util.UUID;
  * Class defining Warp Point system
  */
 public class Warp {
-    private static final HashSet<String> reservedNames = new HashSet<>() {
+    private static final HashSet<String> RESERVED_NAMES = new HashSet<>() {
         {
             add("add");
             add("back");
@@ -23,7 +23,7 @@ public class Warp {
             add("list");
         }
     };
-    private static final HashMap<UUID, LocationData> previousLocations = new HashMap<>();
+    private static final HashMap<UUID, LocationData> PREVIOUS_LOCATIONS = new HashMap<>();
 
     /**
      * Default Constructor - does nothing special
@@ -46,7 +46,7 @@ public class Warp {
 
             if (warps.containsKey(name)) {
                 source.sendSuccess(() -> Component.literal("A warp location with that name already exists."), false);
-            } else if (reservedNames.contains(name)) {
+            } else if (RESERVED_NAMES.contains(name)) {
                 source.sendSuccess(() -> Component.literal("Unable to save warp to a reserved name."), false);
             } else {
                 var loc = new LocationData(player.level().dimension(), player.position(), player.getYRot(), player.getXRot());
@@ -136,15 +136,37 @@ public class Warp {
                 var world = server.getLevel(loc.getWorld());
                 var position = loc.getPosition();
 
-                setPlayerPreviousLocation(player.getUUID(), new LocationData(player.level().dimension(), player.position(), player.getYRot(), player.getXRot()));
+                // If the player has warped less than 2 blocks radius, lets assume they didn't mean to and keep the previous location the same
+                if (!player.position().closerThan(position, 2.0)) {
+                    setPlayerPreviousLocation(player.getUUID(), new LocationData(player.level().dimension(), player.position(), player.getYRot(), player.getXRot()));
+                }
 
-                assert world != null;
-                player.teleportTo(world, position.x, position.y, position.z, relatives, loc.getYaw(), loc.getPitch(), false);
+                if (world == null) {
+                    source.sendSuccess(() -> Component.literal("Unable to warp from no where."), false);
+                    return 1;
+                }
 
-                if (name.equals("back")) {
-                    source.sendSuccess(() -> Component.literal("Successfully warped back to previous location."), false);
-                } else {
-                    source.sendSuccess(() -> Component.literal("Successfully warped to: " + name), false);
+                var success = false;
+
+                // Let's assume that the player wants to bring their vehicle / mount with them as they warp
+                if (player.isPassenger()) {
+                    var vehicle = player.getVehicle();
+
+                    if (vehicle != null) {
+                        // Warping the vehicle should automatically bring the player (and any other passengers) along
+                        success = vehicle.teleportTo(world, position.x, position.y + 0.5, position.z, relatives, loc.getYaw(), loc.getPitch(), false);
+                        success = success && vehicle.hasPassenger(player);
+                    } else {
+                        success = player.teleportTo(world, position.x, position.y, position.z, relatives, loc.getYaw(), loc.getPitch(), false);
+                    }
+
+                    var result = success ? "Successfully warped" : "Failed to warp";
+
+                    if (name.equals("back")) {
+                        source.sendSuccess(() -> Component.literal(result + " back to previous location."), false);
+                    } else {
+                        source.sendSuccess(() -> Component.literal(result + " to: " + name), false);
+                    }
                 }
             } else {
                 source.sendSuccess(() -> Component.literal("This warp location doesn't appear to exist."), false);
@@ -160,16 +182,16 @@ public class Warp {
      * @return LocationData | Null of the previous player location
      */
     private static LocationData getPlayerPreviousLocation(UUID playerUuid) {
-        return previousLocations.getOrDefault(playerUuid, null);
+        return PREVIOUS_LOCATIONS.getOrDefault(playerUuid, null);
     }
 
     private static void setPlayerPreviousLocation(UUID playerUuid, LocationData location) {
-        previousLocations.put(playerUuid, location);
+        PREVIOUS_LOCATIONS.put(playerUuid, location);
     }
 
     /**
      * Remove the saved previous location for the specified player
      * @param playerUuid UUID of the player to clear the previous location for
      */
-    public static void clearPlayerPreviousLocation(UUID playerUuid) { previousLocations.remove(playerUuid); }
+    public static void clearPlayerPreviousLocation(UUID playerUuid) { PREVIOUS_LOCATIONS.remove(playerUuid); }
 }
