@@ -18,7 +18,7 @@ public class FabricSlashWarp implements ModInitializer {
         // project.
 
         // Use Fabric to bootstrap the Common mod.
-        Constants.LOG.info("Hello Fabric world!");
+//        Constants.LOG.info("Hello Fabric world!");
         CommonClass.init();
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->

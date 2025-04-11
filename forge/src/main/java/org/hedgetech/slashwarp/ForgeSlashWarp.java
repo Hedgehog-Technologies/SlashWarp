@@ -20,7 +20,7 @@ public class ForgeSlashWarp {
         // project.
 
         // Use Forge to bootstrap the Common mod.
-        Constants.LOG.info("Hello Forge world!");
+//        Constants.LOG.info("Hello Forge world!");
         CommonClass.init();
 
         MinecraftForge.EVENT_BUS.addListener(this::registerCommandsEventHandler);
