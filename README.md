@@ -1,12 +1,18 @@
 # SlashWarp
 
-A Minecraft mod that adds a simple `/warp` command set to single player and multiplayer alike for quick traversal to previously visited landmarks and points of interest.
+A Minecraft mod that adds a simple `/warp` command set to singleplayer and multiplayer alike for quick traversal to previously visited landmarks and points of interest.
 
 ## Key Features
+### 1.0.0
 - Warp locations are persistent across sessions
 - Warp locations are independent per World file
 - Warping between dimensions is supported
 - Essentially the `teleport` or `tp` command in single player with some balance around having to have been someone before and setting the location as a warp point.
+
+### 1.1.0
+- Vehicles and mounts currently being ridden will warp with the player
+- Pets actively following the player will try to warp with the player
+  - May fail if a valid location to teleport the pet to isn't found in time
 
 ## Usage
 
@@ -19,11 +25,11 @@ A Minecraft mod that adds a simple `/warp` command set to single player and mult
 ```
 
 ## Dependencies
-- Minecraft: `1.21.5`
+- Minecraft: `1.21.4`
 
 ### Mod Loader
-- Fabric: `0.16.12`  
+- Fabric: `0.16.13`  
 OR
-- Forge: `55.0.4`  
+- Forge: `54.1.3`  
 OR
-- NeoForge: `21.5.29-beta`
+- NeoForge: `21.4.124`
