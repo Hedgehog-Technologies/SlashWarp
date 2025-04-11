@@ -8,7 +8,7 @@ import org.hedgetech.slashwarp.commands.CommandRegistry;
 /**
  * Fabric Server Entry Point for SlashWarp Mod
  */
-public class SlashWarp implements ModInitializer {
+public class FabricSlashWarp implements ModInitializer {
     
     @Override
     public void onInitialize() {
@@ -18,7 +18,7 @@ public class SlashWarp implements ModInitializer {
         // project.
 
         // Use Fabric to bootstrap the Common mod.
-        Constants.LOG.info("Hello Fabric world!");
+//        Constants.LOG.info("Hello Fabric world!");
         CommonClass.init();
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
@@ -33,5 +33,5 @@ public class SlashWarp implements ModInitializer {
     /**
      * Default Constructor
      */
-    public SlashWarp() { }
+    public FabricSlashWarp() { }
 }
