@@ -17,7 +17,7 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "org.hedgetech.slashwarp.SlashWarp"
+          "org.hedgetech.slashwarp.FabricSlashWarp"
         ]
     },
     "mixins": [],
