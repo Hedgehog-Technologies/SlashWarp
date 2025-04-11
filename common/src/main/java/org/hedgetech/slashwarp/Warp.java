@@ -159,23 +159,23 @@ public class Warp {
                         // Warping the vehicle should automatically bring the player (and any other passengers) along
                         success = vehicle.teleportTo(world, position.x, position.y + 0.5, position.z, relatives, loc.getYaw(), loc.getPitch(), false);
                         success = success && vehicle.hasPassenger(player);
-                    } else {
-                        success = player.teleportTo(world, position.x, position.y, position.z, relatives, loc.getYaw(), loc.getPitch(), false);
                     }
+                } else {
+                    success = player.teleportTo(world, position.x, position.y, position.z, relatives, loc.getYaw(), loc.getPitch(), false);
+                }
 
-                    // Bring pets along that aren't currently told to sit and stay
-                    // May fail if a safe place wasn't found to teleport to
-                    if (!pets.isEmpty()) {
-                        pets.forEach(TamableAnimal::tryToTeleportToOwner);
-                    }
+                // Bring pets along that aren't currently told to sit and stay
+                // May fail if a safe place wasn't found to teleport to
+                if (!pets.isEmpty()) {
+                    pets.forEach(TamableAnimal::tryToTeleportToOwner);
+                }
 
-                    var result = success ? "Successfully warped" : "Failed to warp";
+                var result = success ? "Successfully warped" : "Failed to warp";
 
-                    if (name.equals("back")) {
-                        source.sendSuccess(() -> Component.literal(result + " back to previous location."), false);
-                    } else {
-                        source.sendSuccess(() -> Component.literal(result + " to: " + name), false);
-                    }
+                if (name.equals("back")) {
+                    source.sendSuccess(() -> Component.literal(result + " back to previous location."), false);
+                } else {
+                    source.sendSuccess(() -> Component.literal(result + " to: " + name), false);
                 }
             } else {
                 source.sendSuccess(() -> Component.literal("This warp location doesn't appear to exist."), false);
