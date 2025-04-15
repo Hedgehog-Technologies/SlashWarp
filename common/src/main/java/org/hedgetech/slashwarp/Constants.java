@@ -13,6 +13,11 @@ public final class Constants {
 	public static final String MOD_ID = "slashwarp";
 
 	/**
+	 * Previous Mod Id - before I had standards
+	 */
+	public static final String MOD_ID_OLD = "HedgeTech.SlashWarp";
+
+	/**
 	 * Mod Name - Should be PascalCase
 	 */
 	public static final String MOD_NAME = "SlashWarp";

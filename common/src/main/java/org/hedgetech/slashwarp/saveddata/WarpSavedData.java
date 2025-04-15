@@ -10,6 +10,7 @@ import org.hedgetech.slashwarp.data.LocationData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -75,6 +76,25 @@ public class WarpSavedData extends SavedData {
     }
 
     /**
+     * Merge two sets of WarpSavedData, preferring the data from this WarpSavedData
+     * @param b Second set of WarpSavedData to merge into this
+     */
+    public void mergeSavedData(WarpSavedData b) {
+        var bKeys = new HashSet<>(b.getWarps().keySet());
+        bKeys.removeAll(this.getWarps().keySet());
+
+        if (!bKeys.isEmpty()) {
+            Constants.LOG.info("Merging {} old warp points...", bKeys.size());
+
+            b.getWarps().forEach((key, value) -> {
+                this.getWarps().putIfAbsent(key, value);
+            });
+        } else {
+               Constants.LOG.info("All warps accounted for.");
+        }
+    }
+
+    /**
      * Returns the name-location data mapping
      * @return A MAp of names to warp point location data
      */
@@ -94,13 +114,22 @@ public class WarpSavedData extends SavedData {
     public static WarpSavedData ofServer(MinecraftServer server) {
         var overworldDataStore = server.overworld().getDataStorage();
 
+        Constants.LOG.info("Hello world, creating from server...");
+
         try {
             var savedData = overworldDataStore.computeIfAbsent(WARP_SAVED_DATA_FACTORY, Constants.MOD_ID);
+            var oldSavedData = overworldDataStore.computeIfAbsent(WARP_SAVED_DATA_FACTORY, Constants.MOD_ID_OLD);
+
+            savedData.mergeSavedData(oldSavedData);
             savedData.setDirty();
-            return savedData;
+
+            return oldSavedData;
         } catch (Exception e) {
+            Constants.LOG.warn("Exception thrown while getting server data: {}", e.toString());
+
             overworldDataStore.set(Constants.MOD_ID, new WarpSavedData());
             var savedData = overworldDataStore.computeIfAbsent(WARP_SAVED_DATA_FACTORY, Constants.MOD_ID);
+
             savedData.setDirty();
             return savedData;
         }
