@@ -114,8 +114,6 @@ public class WarpSavedData extends SavedData {
     public static WarpSavedData ofServer(MinecraftServer server) {
         var overworldDataStore = server.overworld().getDataStorage();
 
-        Constants.LOG.info("Hello world, creating from server...");
-
         try {
             var savedData = overworldDataStore.computeIfAbsent(WARP_SAVED_DATA_FACTORY, Constants.MOD_ID);
             var oldSavedData = overworldDataStore.computeIfAbsent(WARP_SAVED_DATA_FACTORY, Constants.MOD_ID_OLD);
