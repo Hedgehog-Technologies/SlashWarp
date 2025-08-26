@@ -33,6 +33,12 @@ public final class WarpCommand {
                                 Warp.warpTo(context.getSource(), "back")
                         )
                 )
+                // /warp top
+                .then(Commands.literal("top")
+                        .executes(context ->
+                                Warp.warpTo(context.getSource(), "top")
+                        )
+                )
                 // /warp del <name>
                 .then(Commands.literal("del")
                         .then(Commands.argument("name", StringArgumentType.word())

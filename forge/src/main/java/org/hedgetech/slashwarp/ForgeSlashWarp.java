@@ -23,15 +23,15 @@ public class ForgeSlashWarp {
 //        Constants.LOG.info("Hello Forge world!");
         CommonClass.init();
 
-        MinecraftForge.EVENT_BUS.addListener(this::registerCommandsEventHandler);
-        MinecraftForge.EVENT_BUS.addListener(this::registerPlayerLoggedOutEventHandler);
+        RegisterCommandsEvent.BUS.addListener(ForgeSlashWarp::registerCommandsEventHandler);
+        PlayerEvent.PlayerLoggedOutEvent.BUS.addListener(ForgeSlashWarp::registerPlayerLoggedOutEventHandler);
     }
 
-    private void registerCommandsEventHandler(RegisterCommandsEvent event) {
+    private static void registerCommandsEventHandler(RegisterCommandsEvent event) {
         CommandRegistry.registerCommands(event.getDispatcher());
     }
 
-    private void registerPlayerLoggedOutEventHandler(PlayerEvent.PlayerLoggedOutEvent event) {
+    private static void registerPlayerLoggedOutEventHandler(PlayerEvent.PlayerLoggedOutEvent event) {
         Warp.clearPlayerPreviousLocation(event.getEntity().getUUID());
     }
 }
