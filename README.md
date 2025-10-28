@@ -30,11 +30,11 @@ A Minecraft mod that adds a simple `/warp` command set to singleplayer and multi
 ```
 
 ## Dependencies
-- Minecraft: `1.21.6+`
+- Minecraft: `1.21.10`
 
 ### Mod Loader
-- Fabric: `0.17.2` 
+- Fabric: `0.17.3` 
 OR
-- Forge: `56.0.9+`
+- Forge: `60.0.12`
 OR
-- NeoForge: `21.6.20-beta+`
+- NeoForge: `21.10.38-beta`
