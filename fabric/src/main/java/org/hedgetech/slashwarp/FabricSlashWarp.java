@@ -2,6 +2,7 @@ package org.hedgetech.slashwarp;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import org.hedgetech.slashwarp.commands.CommandRegistry;
 
@@ -27,6 +28,10 @@ public class FabricSlashWarp implements ModInitializer {
 
         ServerPlayConnectionEvents.DISCONNECT.register((serverPlayNetworkHandler, minecraftServer) ->
                 Warp.clearPlayerPreviousLocation(serverPlayNetworkHandler.getPlayer().getUUID())
+        );
+
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, isAlive) ->
+                Warp.handlePlayerRespawn(newPlayer)
         );
     }
 

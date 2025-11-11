@@ -2,6 +2,7 @@ package org.hedgetech.slashwarp.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -55,6 +56,13 @@ public class LocationData {
         this.position = position;
         this.yaw = yaw;
         this.pitch = pitch;
+    }
+
+    public LocationData(GlobalPos pos) {
+        this.world = pos.dimension();
+        this.position = pos.pos().getCenter();
+        this.yaw = 0.0f;
+        this.pitch = 0.0f;
     }
 
     public String toString() {

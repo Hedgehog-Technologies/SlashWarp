@@ -298,6 +298,14 @@ public class Warp {
         PREVIOUS_LOCATIONS.put(playerUuid, location);
     }
 
+    public static void handlePlayerRespawn(Player player) {
+        var playerDeathLocation = player.getLastDeathLocation();
+        if (playerDeathLocation.isEmpty()) return;
+
+        var deathLocation = new LocationData(playerDeathLocation.get());
+        setPlayerPreviousLocation(player.getUUID(), deathLocation);
+    }
+
     /**
      * Remove the saved previous location for the specified player
      * @param playerUuid UUID of the player to clear the previous location for
