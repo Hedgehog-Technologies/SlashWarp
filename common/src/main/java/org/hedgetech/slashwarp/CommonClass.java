@@ -1,5 +1,7 @@
 package org.hedgetech.slashwarp;
 
+import org.hedgetech.slashwarp.config.WarpConfig;
+
 /**
  * This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
  * import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -14,7 +16,7 @@ public class CommonClass {
      * code that gets invoked by the entry point of the loader specific projects.
      */
     public static void init() {
-
+        WarpConfig.init();
 //        Constants.LOG.info("Hello from Common init on {}! we are currently in a {} environment!", Services.PLATFORM.getPlatformName(), Services.PLATFORM.getEnvironmentName());
 //        Constants.LOG.info("The ID for diamonds is {}", BuiltInRegistries.ITEM.getKey(Items.DIAMOND));
 

@@ -22,15 +22,6 @@ import java.util.*;
  * Class defining Warp Point system
  */
 public class Warp {
-    private static final HashSet<String> RESERVED_NAMES = new HashSet<>() {
-        {
-            add("add");
-            add("back");
-            add("del");
-            add("list");
-            add("top");
-        }
-    };
     private static final HashMap<UUID, LocationData> PREVIOUS_LOCATIONS = new HashMap<>();
 
     /**
@@ -54,7 +45,7 @@ public class Warp {
 
             if (warps.containsKey(name)) {
                 source.sendSuccess(() -> Component.literal("A warp location with that name already exists."), false);
-            } else if (RESERVED_NAMES.contains(name)) {
+            } else if (Constants.RESERVED_WARP_NAMES.contains(name)) {
                 source.sendSuccess(() -> Component.literal("Unable to save warp to a reserved name."), false);
             } else {
                 var loc = new LocationData(player.level().dimension(), player.position(), player.getYRot(), player.getXRot());
@@ -178,13 +169,7 @@ public class Warp {
         // Floor must be solid and safe
         if (floor.getCollisionShape(world, pos, CollisionContext.empty()).isEmpty()) return false;
 
-        if (floor.is(Blocks.CACTUS)
-                || floor.is(Blocks.MAGMA_BLOCK)
-                || floor.is(Blocks.CAMPFIRE)
-                || floor.is(Blocks.SOUL_CAMPFIRE)
-                || floor.is(Blocks.FIRE)
-                || floor.is(Blocks.LAVA)
-                || floor.is(Blocks.POWDER_SNOW)) return false;
+        if (Constants.HARMFUL_FLOOR_BLOCKS.contains(floor.getBlock())) return false;
 
         // Feet can be air or water
         if (feetState.getFluidState().is(FluidTags.LAVA)) return false;
