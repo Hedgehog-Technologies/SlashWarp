@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import org.hedgetech.slashwarp.config.WarpConfig;
 import org.hedgetech.slashwarp.data.LocationData;
 import org.hedgetech.slashwarp.saveddata.WarpSavedData;
 
@@ -221,14 +222,21 @@ public class Warp {
                 var world = server.getLevel(loc.getWorld());
                 var position = loc.getPosition();
 
-                // If the player has warped less than 2 blocks radius, lets assume they didn't mean to and keep the previous location the same
-                if (!player.position().closerThan(position, 2.0)) {
-                    setPlayerPreviousLocation(player.getUUID(), new LocationData(player.level().dimension(), player.position(), player.getYRot(), player.getXRot()));
-                }
-
                 if (world == null) {
                     source.sendSuccess(() -> Component.literal("Unable to warp from no where."), false);
                     return 1;
+                }
+
+                if (!WarpConfig.CONFIG.allowCrossDimensionWarps
+                    && !world.dimension().equals(player.level().dimension()))
+                ) {
+                    source.sendSuccess(() -> Component.literal("Cross-dimension warps are disabled."), false);
+                    return 1;
+                }
+
+                // If the player has warped less than 2 blocks radius, lets assume they didn't mean to and keep the previous location the same
+                if (!player.position().closerThan(position, 2.0)) {
+                    setPlayerPreviousLocation(player.getUUID(), new LocationData(player.level().dimension(), player.position(), player.getYRot(), player.getXRot()));
                 }
 
                 var pets = world.getEntities(EntityTypeTest.forClass(TamableAnimal.class), animal -> animal.isTame() && animal.isOwnedBy(player) && !animal.isOrderedToSit());
@@ -284,6 +292,8 @@ public class Warp {
     }
 
     public static void handlePlayerRespawn(Player player) {
+        if (!WarpConfig.CONFIG.enableWarpBackToDeathPoint) return;
+
         var playerDeathLocation = player.getLastDeathLocation();
         if (playerDeathLocation.isEmpty()) return;
 
