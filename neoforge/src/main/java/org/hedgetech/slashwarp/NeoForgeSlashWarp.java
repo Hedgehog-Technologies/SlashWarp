@@ -29,6 +29,7 @@ public class NeoForgeSlashWarp {
 
         NeoForge.EVENT_BUS.addListener(NeoForgeSlashWarp::onCommandRegister);
         NeoForge.EVENT_BUS.addListener(NeoForgeSlashWarp::onPlayerLogout);
+        NeoForge.EVENT_BUS.addListener(NeoForgeSlashWarp::onPlayerRespawn);
     }
 
     private static void onCommandRegister(RegisterCommandsEvent event) {
@@ -37,5 +38,10 @@ public class NeoForgeSlashWarp {
 
     private static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         Warp.clearPlayerPreviousLocation(event.getEntity().getUUID());
+    }
+
+    private static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.isEndConquered()) return;
+        Warp.handlePlayerRespawn(event.getEntity());
     }
 }

@@ -1,6 +1,5 @@
 package org.hedgetech.slashwarp;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +24,7 @@ public class ForgeSlashWarp {
 
         RegisterCommandsEvent.BUS.addListener(ForgeSlashWarp::registerCommandsEventHandler);
         PlayerEvent.PlayerLoggedOutEvent.BUS.addListener(ForgeSlashWarp::registerPlayerLoggedOutEventHandler);
+        PlayerEvent.PlayerRespawnEvent.BUS.addListener(ForgeSlashWarp::registerPlayerRespawnEventHandler);
     }
 
     private static void registerCommandsEventHandler(RegisterCommandsEvent event) {
@@ -33,5 +33,10 @@ public class ForgeSlashWarp {
 
     private static void registerPlayerLoggedOutEventHandler(PlayerEvent.PlayerLoggedOutEvent event) {
         Warp.clearPlayerPreviousLocation(event.getEntity().getUUID());
+    }
+
+    private static void registerPlayerRespawnEventHandler(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.isEndConquered()) return;
+        Warp.handlePlayerRespawn(event.getEntity());
     }
 }
