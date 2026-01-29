@@ -228,7 +228,7 @@ public class Warp {
                 }
 
                 if (!WarpConfig.CONFIG.allowCrossDimensionWarps
-                    && !world.dimension().equals(player.level().dimension()))
+                    && !world.dimension().equals(player.level().dimension())
                 ) {
                     source.sendSuccess(() -> Component.literal("Cross-dimension warps are disabled."), false);
                     return 1;
