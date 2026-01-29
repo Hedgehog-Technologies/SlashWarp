@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -46,13 +46,13 @@ public class LocationData {
 
     /**
      * New LocationData from existing data
-     * @param world Level ResourceLocation String
+     * @param world Level Identifier String
      * @param position Position Vec3
      * @param yaw Yaw (y-rot)
      * @param pitch Pitch (x-rot)
      */
     public LocationData(String world, Vec3 position, float yaw, float pitch) {
-        this.world = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(world));
+        this.world = ResourceKey.create(Registries.DIMENSION, Identifier.parse(world));
         this.position = position;
         this.yaw = yaw;
         this.pitch = pitch;
@@ -67,7 +67,7 @@ public class LocationData {
 
     public String toString() {
         var numFormat = new DecimalFormat("0.00");
-        return "[" + world.location() + "] (" + numFormat.format(position.x) + ", " + numFormat.format(position.y) + ", " + numFormat.format(position.z) + ")";
+        return "[" + world.identifier() + "] (" + numFormat.format(position.x) + ", " + numFormat.format(position.y) + ", " + numFormat.format(position.z) + ")";
     }
 
     /**
@@ -80,7 +80,7 @@ public class LocationData {
      * Get the stored Level ResourceLocation as a String
      * @return ResourceLocation as a String
      */
-    public String getWorldLocationString() { return world.location().toString(); }
+    public String getWorldLocationString() { return world.identifier().toString(); }
 
     /**
      * Get the stored position (vec3) value

@@ -17,13 +17,13 @@ A Minecraft mod that adds a simple `/warp` command set to singleplayer and multi
 See [release-notes](./docs/release-notes.md) for detailed changelogs.
 
 ## Dependencies
-- Minecraft: `1.21.10`
+- Minecraft: `1.21.11`
 
 ### Mod Loader
-- Fabric: `0.17.3`
+- Fabric: `0.18.2`
 
 OR
-- Forge: `60.0.12`
+- Forge: `61.0.1`
 
 OR
-- NeoForge: `21.10.38-beta`
+- NeoForge: `21.11.3-beta`
