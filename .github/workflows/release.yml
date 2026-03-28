@@ -33,11 +33,11 @@ jobs:
           if [ -z "$branch" ]; then branch="unknown"; fi
           echo "branch=$branch" >> $GITHUB_OUTPUT
 
-      - name: Setup JDK 21
+      - name: Setup JDK 25
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 25
 
       - name: Cache gradle
         uses: actions/cache@v4

@@ -13,7 +13,7 @@
         "issues": "${issue_url}"
     },
     "license": "${license}",
-    "icon": "assets/${mod_id}.png",
+    "icon": "assets/slashwarp/textures/gui/${mod_id}.png",
     "environment": "*",
     "entrypoints": {
         "main": [

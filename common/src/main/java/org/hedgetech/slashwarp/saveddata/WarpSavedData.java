@@ -2,7 +2,9 @@ package org.hedgetech.slashwarp.saveddata;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import org.hedgetech.slashwarp.data.LocationData;
@@ -17,6 +19,7 @@ import static org.hedgetech.slashwarp.Constants.MOD_ID;
  * Class to keep Warp Points persistent
  */
 public class WarpSavedData extends SavedData {
+    public static final Identifier WARP_SAVED_DATA_ID = Identifier.fromNamespaceAndPath(MOD_ID, "warp_saved_data");
     /**
      * Codec to be used to define the name-location data mapping
      */
@@ -50,7 +53,7 @@ public class WarpSavedData extends SavedData {
      */
     public Map<String, LocationData> getWarps() { return warps; }
 
-    private static final SavedDataType<WarpSavedData> TYPE = new SavedDataType<>(MOD_ID, WarpSavedData::new, CODEC, null);
+    private static final SavedDataType<WarpSavedData> TYPE = new SavedDataType<>(WARP_SAVED_DATA_ID, WarpSavedData::new, CODEC, DataFixTypes.LEVEL);
 
     /**
      * Gets the persistent data store for the passed in server
