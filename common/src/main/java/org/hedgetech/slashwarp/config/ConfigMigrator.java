@@ -14,7 +14,18 @@ public final class ConfigMigrator {
             switch (version) {
                 case "1.0":
                     cfg.warpOnClick = false;
+
                     version = "1.1";
+                    cfg.configVersion = version;
+                    changed = true;
+                    break;
+                case "1.1":
+                    cfg.warpCooldownSeconds = 0;
+                    cfg.opsBypassWarpCooldown = true;
+                    cfg.cooldownAppliesToBack = true;
+                    cfg.cooldownAppliesToTop = true;
+
+                    version = "1.2";
                     cfg.configVersion = version;
                     changed = true;
                     break;

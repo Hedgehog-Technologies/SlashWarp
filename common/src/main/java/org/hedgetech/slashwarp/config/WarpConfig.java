@@ -10,12 +10,16 @@ import java.nio.file.Paths;
 public class WarpConfig {
     public static volatile WarpConfig CONFIG;
 
-    public static final String CURRENT_CONFIG_VERSION = "1.1";
+    public static final String CURRENT_CONFIG_VERSION = "1.2";
 
     public String configVersion = CURRENT_CONFIG_VERSION;
     public boolean allowCrossDimensionWarps = true;
     public boolean enableWarpBackToDeathPoint = false;
     public boolean warpOnClick = false;
+    public int warpCooldownSeconds = 0;
+    public boolean opsBypassWarpCooldown = true;
+    public boolean cooldownAppliesToBack = true;
+    public boolean cooldownAppliesToTop = true;
 
     private WarpConfig() {}
 
