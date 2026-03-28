@@ -1,9 +1,12 @@
 package org.hedgetech.slashwarp;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.TamableAnimal;
@@ -91,19 +94,46 @@ public class Warp {
      */
     public static int listWarps(CommandSourceStack source) {
         var player = source.getPlayer();
+        if (player == null) return 1;
 
-        if (player != null) {
-            var server = source.getServer();
-            var state = WarpSavedData.ofServer(server);
-            var warpList = new StringBuilder();
+        var state = WarpSavedData.ofServer(source.getServer());
+        var warps = state.getWarps();
 
-            state.getWarps().forEach((name, loc) -> {
-                var str = "\n" + name + ": " + loc.toString();
-                warpList.append(str);
-            });
-
-            source.sendSuccess(() -> Component.literal(warpList.toString()), false);
+        if (warps.isEmpty()) {
+            source.sendSuccess(() -> Component.literal("No warp locations have been saved yet."), false);
+            return 1;
         }
+
+        var hoverText = WarpConfig.CONFIG.warpOnClick
+                ? "Click to warp"
+                : "Click to paste command";
+
+        source.sendSuccess(() -> Component.literal("Available warp locations:"), false);
+
+        warps.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(String.CASE_INSENSITIVE_ORDER))
+                .forEach(entry -> {
+                    var name = entry.getKey();
+                    var loc = entry.getValue();
+                    var command = "/warp " + name;
+                    var clickEvent = WarpConfig.CONFIG.warpOnClick
+                            ? new ClickEvent.RunCommand(command)
+                            : new ClickEvent.SuggestCommand(command);
+
+                    var clickableName = Component.literal(name)
+                            .withStyle(style -> style
+                                    .withColor(ChatFormatting.AQUA)
+                                    .withUnderlined(true)
+                                    .withClickEvent(clickEvent)
+                                    .withHoverEvent(new HoverEvent.ShowText(Component.literal(hoverText + ": " + command.trim())))
+                            );
+
+                    var line = Component.literal("- ")
+                            .append(clickableName)
+                            .append(Component.literal(": " + loc));
+
+                    source.sendSuccess(() -> line, false);
+                });
 
         return 1;
     }
