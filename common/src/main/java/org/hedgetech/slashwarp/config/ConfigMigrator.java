@@ -12,14 +12,12 @@ public final class ConfigMigrator {
         // apply upgrades sequentially
         while (!version.equals(WarpConfig.CURRENT_CONFIG_VERSION)) {
             switch (version) {
-                // Future migrations:
-//                case "1.0":
-//                    ...
-//                    version = "1.1";
-//                    cfg.configVersion = version;
-//                    changed = true;
-//                    break;
-
+                case "1.0":
+                    cfg.warpOnClick = false;
+                    version = "1.1";
+                    cfg.configVersion = version;
+                    changed = true;
+                    break;
                 default:
                     version = WarpConfig.CURRENT_CONFIG_VERSION;
                     break;
