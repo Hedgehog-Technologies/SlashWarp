@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.TamableAnimal;
@@ -26,7 +27,8 @@ import java.util.*;
  * Class defining Warp Point system
  */
 public class Warp {
-    private static final HashMap<UUID, LocationData> PREVIOUS_LOCATIONS = new HashMap<>();
+    private static final Map<UUID, LocationData> PREVIOUS_LOCATIONS = new HashMap<>();
+    private static final Map<UUID, Long> NEXT_WARP_ALLOWED_TICK = new HashMap<>();
 
     /**
      * Default Constructor - does nothing special
@@ -264,6 +266,16 @@ public class Warp {
                     return 1;
                 }
 
+                if (shouldApplyCooldown(source, name)) {
+                    var remaining = getRemainingCooldownTicks(source, player.getUUID());
+                    if (remaining > 0) {
+                        source.sendSuccess(() -> Component.literal(
+                                "Warp is on cooldown. Try again in " + formatCooldown(remaining) + "."
+                        ), false);
+                        return 1;
+                    }
+                }
+
                 // If the player has warped less than 2 blocks radius, lets assume they didn't mean to and keep the previous location the same
                 if (!player.position().closerThan(position, 2.0)) {
                     setPlayerPreviousLocation(player.getUUID(), new LocationData(player.level().dimension(), player.position(), player.getYRot(), player.getXRot()));
@@ -300,12 +312,40 @@ public class Warp {
                 } else {
                     source.sendSuccess(() -> Component.literal(result + " to: " + name), false);
                 }
+
+                if (success && shouldApplyCooldown(source, name)) {
+                    var now = source.getServer().getTickCount();
+                    var cooldownTicks = WarpConfig.CONFIG.warpCooldownSeconds * 20L;
+                    NEXT_WARP_ALLOWED_TICK.put(player.getUUID(), now + cooldownTicks);
+                }
             } else {
                 source.sendSuccess(() -> Component.literal("This warp location doesn't appear to exist."), false);
             }
         }
 
         return 1;
+    }
+
+    private static boolean shouldApplyCooldown(CommandSourceStack source, String name) {
+        var cfg = WarpConfig.CONFIG;
+        if (cfg.warpCooldownSeconds <= 0) return false;
+        if (cfg.opsBypassWarpCooldown && source.getPlayer().permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)) return false;
+        if (name.equals("back") && !cfg.cooldownAppliesToBack) return false;
+        if (name.equals("top") && !cfg.cooldownAppliesToTop) return false;
+        return true;
+    }
+
+    private static long getRemainingCooldownTicks(CommandSourceStack source, UUID playerUuid) {
+        var now = source.getServer().getTickCount();
+        var next = NEXT_WARP_ALLOWED_TICK.getOrDefault(playerUuid, 0L);
+        return Math.max(0L, next - now);
+    }
+
+    private static String formatCooldown(long ticks) {
+        var seconds = (ticks + 19L) / 20L;
+        var minutes = seconds / 60L;
+        var rem = seconds % 60L;
+        return minutes > 0 ? (minutes + "m " + rem + "s") : (seconds + "s");
     }
 
     /**
@@ -335,5 +375,8 @@ public class Warp {
      * Remove the saved previous location for the specified player
      * @param playerUuid UUID of the player to clear the previous location for
      */
-    public static void clearPlayerPreviousLocation(UUID playerUuid) { PREVIOUS_LOCATIONS.remove(playerUuid); }
+    public static void clearPlayerPreviousLocation(UUID playerUuid) {
+        PREVIOUS_LOCATIONS.remove(playerUuid);
+        NEXT_WARP_ALLOWED_TICK.remove(playerUuid);
+    }
 }
