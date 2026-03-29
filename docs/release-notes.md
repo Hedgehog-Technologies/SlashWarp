@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.2.0
+- Warp points shown in the `/warp list` command are now clickable
+  - Configurable to automatically warp or to past the associated warp command into the chat box
+- Add an optional and configurable, per-player cooldown for warping
+  - This is disabled by default, but can be toggled on in the config file
+
 ## 2.1.0
 - Add a config file to allow for customizing mod behavior
 - `/warp back` can now be used to return to the location of your last death
