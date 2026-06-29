@@ -60,7 +60,7 @@ public class LocationData {
 
     public LocationData(GlobalPos pos) {
         this.world = pos.dimension();
-        this.position = pos.pos().getCenter();
+        this.position = Vec3.atCenterOf(pos.pos());
         this.yaw = 0.0f;
         this.pitch = 0.0f;
     }

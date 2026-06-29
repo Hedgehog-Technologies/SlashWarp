@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.hedgetech.slashwarp.config.WarpConfig;
 import org.hedgetech.slashwarp.data.LocationData;
@@ -246,7 +247,7 @@ public class Warp {
                         return 1;
                     }
 
-                    loc = new LocationData(player.level().dimension(), safePos.above().getCenter(), player.getYRot(), player.getXRot());
+                    loc = new LocationData(player.level().dimension(), Vec3.atCenterOf(safePos.above()), player.getYRot(), player.getXRot());
                 } else {
                     loc = warps.get(name);
                 }

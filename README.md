@@ -4,7 +4,7 @@
 
 ![](https://img.shields.io/badge/Environment-server-c65135)
 ![](https://img.shields.io/badge/Loader-Fabric_%2b_Forge_%2b_NeoForge-darkgreen)
-![](https://img.shields.io/badge/Supports_Versions-1.21.11_|_26.1.x-darkgreen)
+![](https://img.shields.io/badge/Supports_Versions-1.21.11_|_26.1_--_26.2-darkgreen)
 
 A Minecraft mod that adds a simple `/warp` command set to singleplayer and multiplayer alike for quick traversal to previously visited landmarks and points of interest.
 
@@ -23,14 +23,14 @@ A Minecraft mod that adds a simple `/warp` command set to singleplayer and multi
 See [release-notes](./docs/release-notes.md) for detailed changelogs.
 
 ## Dependencies
-- Minecraft: `26.1`
+- Minecraft: `26.2`
 
 ### Mod Loader
-- Fabric: `0.18.4`
+- Fabric: `0.19.0`
 OR
-- Forge: `62.0.3`
+- Forge: `65.0.1`
 OR
-- NeoForge: `26.1.0.1-beta`
+- NeoForge: `26.2.0.0-beta`
 
 [<img alt="Support me on Ko-fi" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/donate/kofi-singular-alt_vector.svg"/>](https://ko-fi.com/jag3dagster)
 [<img alt="Chat with me in Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/social/discord-plural_vector.svg"/>](https://discord.gg/sJggphj5UX)
