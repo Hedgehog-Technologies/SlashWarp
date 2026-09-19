@@ -3,8 +3,8 @@
 [<img src="https://img.shields.io/modrinth/dt/ky9Rozed?label=Modrinth%20Downloads"/>](https://modrinth.com/mod/slashwarp)
 
 ![](https://img.shields.io/badge/Environment-server-c65135)
-![](https://img.shields.io/badge/Loader-Fabric_%2b_Forge_%2b_NeoForge-darkgreen)
-![](https://img.shields.io/badge/Supports_Versions-1.21.11_|_26.1_--_26.2-darkgreen)
+![](https://img.shields.io/badge/Loader-Fabric_%2b_NeoForge-darkgreen)
+![](https://img.shields.io/badge/Supports_Versions-1.21.11_|_26.1_--_26.3-darkgreen)
 
 A Minecraft mod that adds a simple `/warp` command set to singleplayer and multiplayer alike for quick traversal to previously visited landmarks and points of interest.
 
@@ -23,12 +23,12 @@ A Minecraft mod that adds a simple `/warp` command set to singleplayer and multi
 See [release-notes](./docs/release-notes.md) for detailed changelogs.
 
 ## Dependencies
-- Minecraft: `26.2`
+- Minecraft: `26.3`
 
 ### Mod Loader
 - Fabric: `0.19.0`
-OR
-- Forge: `65.0.1`
+<!--OR-->
+<!--- Forge: `65.0.1`-->
 OR
 - NeoForge: `26.2.0.0-beta`
 
