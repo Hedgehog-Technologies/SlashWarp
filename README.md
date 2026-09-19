@@ -30,7 +30,7 @@ See [release-notes](./docs/release-notes.md) for detailed changelogs.
 <!--OR-->
 <!--- Forge: `65.0.1`-->
 OR
-- NeoForge: `26.2.0.0-beta`
+- NeoForge: `26.3.0.3-beta`
 
 [<img alt="Support me on Ko-fi" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/donate/kofi-singular-alt_vector.svg"/>](https://ko-fi.com/jag3dagster)
 [<img alt="Chat with me in Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/social/discord-plural_vector.svg"/>](https://discord.gg/sJggphj5UX)
